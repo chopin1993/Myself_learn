@@ -1,7 +1,9 @@
 # coding:utf-8
-import requests
 import json
 import time
+
+import requests
+
 if __name__ == "__main__":
     url = "http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsList"
     headers = {
@@ -9,7 +11,7 @@ if __name__ == "__main__":
     }
     data = {
         "on": "true",
-        "page": "2",
+        "page": "1",
         "pageSize": "15",
         "productName": "",
         "conditionType": "1",
@@ -21,17 +23,13 @@ if __name__ == "__main__":
     json_ids = requests.post(url=url, data=data, headers=headers).json()
     for dic in json_ids["list"]:
         id_list.append(dic["ID"])
-    # print(id_list)
-    post_url = "http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsById"
-    for id in id_list:
-        # print(id)
+        post_url = "http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsById"
+    for c_id in id_list:
         data = {
-            "id": id
+            "id": c_id
         }
         detail_company = requests.post(url=post_url, headers=headers, data=data).json()
-        # print(datil_company)
         all_date_list.append(detail_company)
-
-    fp = open("all_company_detail.json","w",encoding="utf-8")
-    json.dump(all_date_list,fp=fp,ensure_ascii=False)
-    print("爬取药监局数据完成！--->爬取时间",time.asctime(time.localtime(time.time())))
+    fp = open("all_company_detail.json", "w", encoding="utf-8")
+    json.dump(all_date_list, fp=fp, ensure_ascii=False)
+    print("爬取药监局数据完成！--->爬取时间", time.asctime(time.localtime(time.time())))
