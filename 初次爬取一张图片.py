@@ -5,8 +5,8 @@ import re
 import requests
 
 # 需求：爬取糗事百科中糗图板块下的所有糗图图片
-if not os.path.exists("./qiutuLibs"):  # 早桌面创建一个文件夹来存储图片数据
-    os.mkdir("./qiutuLibs")
+if not os.path.exists("./糗图库"):  # 早桌面创建一个文件夹来存储图片数据
+    os.mkdir("./糗图库")
 
 url = "https://www.qiushibaike.com/imgrank/"  # 爬取整张“热图”页面
 headers = {
@@ -21,7 +21,7 @@ for src in img_src_list:
     src = "https:" + src
     img_data = requests.get(url=src, headers=headers).content
     img_name = src.split("/")[-1]  # 将图片网址的最后一段作为图片名称（以“/”做列表切片）
-    img_path = "./qiutuLibs/" + img_name
+    img_path = "./糗图库/" + img_name
     with open(img_path, "wb") as fp:
         fp.write(img_data)
         print(img_name, "爬取了一个图片！！")
