@@ -6,8 +6,8 @@ import time
 import requests
 import datetime
 # 需求：爬取糗事百科中糗图板块下的所有糗图图片
-if not os.path.exists("./糗图库"):  # 早桌面创建一个文件夹来存储图片数据
-    os.mkdir("./糗图库")
+if not os.path.exists("F:/糗图库"):  # 早桌面创建一个文件夹来存储图片数据
+    os.mkdir("F:/糗图库")
 
 url = "https://www.qiushibaike.com/imgrank/page/%d/"  # 爬取整张“热图”页面https://www.qiushibaike.com/imgrank/page/9/
 headers = {
@@ -26,7 +26,7 @@ for page_Num in range(1, 14):
         src = "https:" + src
         img_data = requests.get(url=src, headers=headers).content
         img_name = src.split("/")[-1]  # 将图片网址的最后一段作为图片名称（以“/”做列表切片）
-        img_path = "./糗图库/" + img_name
+        img_path = "F:/糗图库/" + img_name
         with open(img_path, "wb") as fp:
             fp.write(img_data)
             print(img_name, "爬取了一个图片！！")
