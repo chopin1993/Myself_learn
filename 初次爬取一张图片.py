@@ -1,10 +1,11 @@
 # coding:gbk
+import datetime
 import os
 import re
 import time
 
 import requests
-import datetime
+
 # 需求：爬取糗事百科中糗图板块下的所有糗图图片
 if not os.path.exists("F:/糗图库"):  # 早桌面创建一个文件夹来存储图片数据
     os.mkdir("F:/糗图库")
@@ -16,7 +17,7 @@ headers = {
 
 starttime = datetime.datetime.now()     # 计算爬取时间，开始时间点
 
-for page_Num in range(1, 14):
+for page_Num in range(1, 3):
     new_url = format(url % page_Num)
     # 使用通用爬虫爬取
     page_text = requests.get(url=new_url, headers=headers).text
