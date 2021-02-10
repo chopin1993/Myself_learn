@@ -8,10 +8,11 @@ headers = {
 }
 url = 'http://fund.10jqka.com.cn/zixuan/index.html'
 page_text = requests.get(url=url, headers=headers).text
-# print(page_text)
+print(page_text)
 tree = etree.HTML(page_text)
-tr_list = tree.xpath("//tbody//tr/td/a/text()")
-print(tr_list)
+# tr_list = tree.xpath("")
+# print(tr_list)
+
 # stockcode = tree.xpath("//div[@class='m_header']//strong/@stockcode")
 # price_details = tree.xpath("//div//span[@class='price_plus']/@id")
 # back_data = name + stockcode + price_details
