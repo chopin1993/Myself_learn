@@ -1,5 +1,5 @@
-# coding:utf-8
-# çˆ¬å–è‡ªé€‰åŸºé‡‘æ•°æ®
+# coding:gbk
+# ÅÀÈ¡×ÔÑ¡»ù½ğÊı¾İ
 import requests
 from lxml import etree
 
@@ -8,10 +8,10 @@ headers = {
 }
 url = 'http://fund.10jqka.com.cn/zixuan/index.html'
 page_text = requests.get(url=url, headers=headers).text
-print(page_text)
+# print(page_text)
 tree = etree.HTML(page_text)
-# tr_list = tree.xpath("")
-# print(tr_list)
+tr_list = tree.xpath("/html/body/div[2]/div[2]/div[2]/table//text()")
+print(tr_list)
 
 # stockcode = tree.xpath("//div[@class='m_header']//strong/@stockcode")
 # price_details = tree.xpath("//div//span[@class='price_plus']/@id")

@@ -11,10 +11,13 @@ page_text = requests.get(url=url, headers=headers).text
 # print(page_text)
 tree = etree.HTML(page_text)
 # print(tree)
-text_h3 = tree.xpath(
-    "//section[@class='list']//div[@class='property-content-title']/h3/text()")  # //div[@class='property-content-title']/h3/text()
+name_list = tree.xpath(
+    "//section[@class='list']//div[@class='property-content-title']/h3[@title]/text()")  # //div[@class='property-content-title']/h3/text()
+# price = tree.xpath("//*[@id='__layout']/div/section/section[3]/section[1]/section[2]/div/a/div/div/p/text()")
+print(name_list)
+# for name in name_list:
+#     print(name)
 # print(text)
 fp = open('58.text', 'w', encoding='utf-8')
-for h3 in text_h3:
-    fp.write(h3+'\n')
-print('完成！')
+for h3 in page_text:
+    fp.write(h3)
