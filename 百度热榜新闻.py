@@ -1,5 +1,5 @@
 # coding:utf-8
-# 爬取百度热榜新闻
+# 爬取百度热榜新闻2021-02-17
 import requests
 from lxml import etree
 
@@ -20,7 +20,8 @@ if __name__ == '__main__':
         post_url_list.append(post_url)
     # print(post_url_list)
     fp = open('百度热搜.text', 'w', encoding='utf-8')
+    for news in hot_news_list:
+        fp.write(news + '   ' + '\n')
+    print('爬取完成！共 {0} 条热点新闻。'.format(len(hot_news_list)))
     for i in post_url_list:
-        for news in hot_news_list:
-            fp.write(news + '   ' + i + '\n')
-    print('爬取完成！共{0}条热点新闻。'.format(len(hot_news_list)))
+        fp.write(i + '\n')

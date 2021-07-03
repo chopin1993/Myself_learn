@@ -8,7 +8,7 @@ from lxml import etree
 if not os.path.exists("F:/魔镜美女"):  # 在F盘创建一个文件夹来存储图片数据
     os.mkdir("F:/魔镜美女")
 
-url = "https://www.520mojing.com/thread-40394-1-3.html"
+url = "https://www.520mojing.com/thread-28491-1-19.html"
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
 }
