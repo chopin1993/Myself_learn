@@ -46,4 +46,121 @@
 `wd.switch_to.default_content()`
    
 ## 切换到新的窗口
-1. 
+1. 如果我们用Selenium写自动化程序 在新窗口里面 打开一个新网址， 并且去自动化操作新窗口里面的元素，即使
+    新窗口打开了， 这时候，我们的 WebDriver对象对应的 还是老窗口，自动化操作也还是在老窗口进行如果我们
+    要到新的窗口里面操作，该怎么做呢？
+    可以使用Webdriver对象的switch_to属性的 window方法，如下所示：
+    `wd.switch_to.window(handle)`
+    其中，参数handle需要传入什么呢？ 
+    WebDriver对象有window_handles 属性，这是一个列表对象， 里面包括了当前浏览器里面所有的窗口句柄。
+   所谓句柄，大家可以想象成对应网页窗口的一个ID，
+那么我们就可以通过 类似下面的代码，
+`for handle in wd.window_handles:
+     先切换到该窗口
+    wd.switch_to.window(handle)
+    得到该窗口的标题栏字符串，判断是不是我们要操作的那个窗口
+    if 'Bing' in wd.title:
+        # 如果是，那么这时候WebDriver对象就是对应的该该窗口，正好，跳出循环，
+        break`
+上面代码的用意就是：
+我们依次获取 wd.window_handles 里面的所有 句柄 对象， 并且调用 wd.switch_to.window(handle) 方法，切入到每个窗口，
+然后检查里面该窗口对象的属性（可以是标题栏，地址栏），判断是不是我们要操作的那个窗口，如果是，就跳出循环。
+同样的，如果我们在新窗口 操作结束后， 还要回到原来的窗口，该怎么办？
+我们可以仍然使用上面的方法，依次切入窗口，然后根据 标题栏 之类的属性值判断。
+还有更省事的方法。
+因为我们一开始就在 原来的窗口里面，我们知道 进入新窗口操作完后，还要回来，可以事先 保存该老窗口的 句柄，使用如下方法
+`mainWindow变量保存当前窗口的句柄
+mainWindow = wd.current_window_handle`
+切换到新窗口操作完后，就可以直接像下面这样，将driver对应的对象返回到原来的窗口
+`通过前面保存的老窗口的句柄，自己切换到老窗口
+wd.switch_to.window(mainWindow)`
+   
+# 选择框
+## radio框
+1. radio框选择选项，直接用WebElement的click方法，模拟用户点击就可以了。
+比如, 我们要在下面的html中：
+先打印当前选中的老师名字
+再选择 小雷老师
+<div id="s_radio">
+  <input type="radio" name="teacher" value="小江老师">小江老师<br>
+  <input type="radio" name="teacher" value="小雷老师">小雷老师<br>
+  <input type="radio" name="teacher" value="小凯老师" checked="checked">小凯老师
+</div>
+对应的代码如下
+`获取当前选中的元素
+element = wd.find_element_by_css_selector(
+  '#s_radio input[checked=checked]')
+print('当前选中的是: ' + element.get_attribute('value'))
+点选 小雷老师
+wd.find_element_by_css_selector(
+  '#s_radio input[value="小雷老师"]').click()`
+
+## checkbox框
+1. 对checkbox进行选择，也是直接用 WebElement 的 click 方法，模拟用户点击选择。
+
+需要注意的是，要选中checkbox的一个选项，必须 先获取当前该复选框的状态 ，如果该选项已经勾选了，就不能再点击。否则反而会取消选择。
+
+比如, 我们要在下面的html中：选中 小雷老师
+
+<div id="s_checkbox">
+  <input type="checkbox" name="teacher" value="小江老师">小江老师<br>
+  <input type="checkbox" name="teacher" value="小雷老师">小雷老师<br>
+  <input type="checkbox" name="teacher" value="小凯老师" checked="checked">小凯老师
+</div>
+我们的思路可以是这样：
+先把 已经选中的选项全部点击一下，确保都是未选状态
+再点击 小雷老师
+示例代码
+先把 已经选中的选项全部点击一下
+`elements = wd.find_elements_by_css_selector(
+  '#s_checkbox input[checked="checked"]')`
+
+for element in elements:
+    element.click()
+再点击 小雷老师
+`wd.find_element_by_css_selector(
+  "#s_checkbox input[value='小雷老师']").click()`
+
+## select框
+1. 不同点
+
+radio框及checkbox框都是input元素，只是里面的type不同而已。
+select框 则是一个新的select标签，大家可以对照浏览器网页内容查看一下
+对于Select 选择框， Selenium 专门提供了一个 Select类 进行操作。
+
+2. Select类 提供了如下的方法
+
+- `select_by_value`
+根据选项的 value属性值 ，选择元素。
+  
+比如，下面的HTML，
+
+`<option value="foo">Bar</option>`
+就可以根据 foo 这个值选择该选项，
+
+`s.select_by_value('foo')`
+
+`select_by_index`
+根据选项的 次序 （从0开始），选择元素
+
+`select_by_visible_text`
+根据选项的 可见文本 ，选择元素。
+
+比如，下面的HTML，
+
+`<option value="foo">Bar</option>`
+就可以根据 Bar 这个内容，选择该选项
+
+`s.select_by_visible_text('Bar')`
+
+`deselect_by_value`
+根据选项的value属性值， 去除 选中元素
+
+`deselect_by_index`
+根据选项的次序，去除 选中元素
+
+`deselect_by_visible_text`
+根据选项的可见文本，去除 选中元素
+
+`deselect_all`
+去除 选中所有元素
